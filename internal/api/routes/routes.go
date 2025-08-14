@@ -8,7 +8,7 @@ import (
 )
 
 // SetupFiberRoutes configures all application routes for Fiber
-func SetupFiberRoutes(app *fiber.App, appServices *services.AppServices) {
+func SetupRoutes(app *fiber.App, appServices *services.AppServices) {
 	// Global middleware
 	app.Use(middleware.CORS())
 

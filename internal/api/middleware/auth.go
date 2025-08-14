@@ -3,6 +3,7 @@ package middleware
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/yourusername/go-backend-boilerplate/internal/services"
+	"github.com/yourusername/go-backend-boilerplate/internal/utils"
 )
 
 // CORS middleware for Fiber
@@ -23,16 +24,16 @@ func JWTAuth(jwtService *services.JWTService, userService *services.UserService)
 	return func(c *fiber.Ctx) error {
 		authHeader := c.Get("Authorization")
 		if authHeader == "" || len(authHeader) < 7 || authHeader[:7] != "Bearer " {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Missing or invalid Authorization header"})
+			return utils.WriteErrorResponse(c, fiber.StatusUnauthorized, "Missing or invalid Authorization header")
 		}
 		tokenString := authHeader[7:]
 		claims, err := jwtService.ValidateToken(tokenString)
 		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid JWT token"})
+			return utils.WriteErrorResponse(c, fiber.StatusUnauthorized, "Invalid JWT token")
 		}
 		user, err := userService.GetUserByID(claims.UserID)
 		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "User not found for JWT claims"})
+			return utils.WriteErrorResponse(c, fiber.StatusUnauthorized, "User not found for JWT claims")
 		}
 		c.Locals("user", user)
 		return c.Next()

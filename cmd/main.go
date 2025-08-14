@@ -42,7 +42,7 @@ func main() {
 	app := fiber.New()
 
 	// Pass appServices to routes for global access
-	routes.SetupFiberRoutes(app, appServices)
+	routes.SetupRoutes(app, appServices)
 
 	// Start server
 	serverAddr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
