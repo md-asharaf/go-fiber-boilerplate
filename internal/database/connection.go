@@ -3,7 +3,7 @@ package database
 import (
 	"time"
 
-	"github.com/yourusername/go-backend-boilerplate/internal/config"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

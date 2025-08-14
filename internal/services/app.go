@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/yourusername/go-backend-boilerplate/internal/config"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
 	"gorm.io/gorm"
 )
 

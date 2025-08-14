@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
 	"github.com/redis/go-redis/v9"
-	"github.com/yourusername/go-backend-boilerplate/internal/config"
 	"go.uber.org/zap"
 )
 

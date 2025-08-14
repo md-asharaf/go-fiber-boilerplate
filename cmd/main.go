@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/yourusername/go-backend-boilerplate/internal/api/routes"
-	"github.com/yourusername/go-backend-boilerplate/internal/config"
-	"github.com/yourusername/go-backend-boilerplate/internal/database"
-	"github.com/yourusername/go-backend-boilerplate/internal/models"
-	"github.com/yourusername/go-backend-boilerplate/internal/services"
-	"github.com/yourusername/go-backend-boilerplate/internal/utils"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/api/routes"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/database"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/models"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/services"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 	"go.uber.org/zap"
 )
 

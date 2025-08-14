@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/yourusername/go-backend-boilerplate/internal/utils"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 )
 
 // HealthCheck provides health check endpoint for Fiber

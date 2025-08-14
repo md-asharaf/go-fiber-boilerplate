@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/yourusername/go-backend-boilerplate/internal/models"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/models"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"

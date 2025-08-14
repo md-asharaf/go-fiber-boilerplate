@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/yourusername/go-backend-boilerplate/internal/models"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/models"
 	"gorm.io/gorm"
 )
 

@@ -2,9 +2,9 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/yourusername/go-backend-boilerplate/internal/api/handlers"
-	"github.com/yourusername/go-backend-boilerplate/internal/api/middleware"
-	"github.com/yourusername/go-backend-boilerplate/internal/services"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/api/handlers"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/api/middleware"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/services"
 )
 
 // SetupFiberRoutes configures all application routes for Fiber
