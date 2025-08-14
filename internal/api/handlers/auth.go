@@ -22,11 +22,8 @@ func NewAuthHandler(authService *services.AuthService) *AuthHandler {
 // Register handles user registration for Fiber
 func (h *AuthHandler) Register(c *fiber.Ctx) error {
 	var input models.RegisterInput
-	if err := c.BodyParser(&input); err != nil {
-		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
-	}
-	if err := utils.ValidateStruct(&input); err != nil {
-		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Validation failed: "+err.Error())
+	if err := utils.ParseAndValidateInput(c, &input); err != nil {
+		return err
 	}
 	resp, err := h.authService.Register(input)
 	if err != nil {
@@ -38,11 +35,8 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 // Login handles user login for Fiber
 func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	var input models.LoginInput
-	if err := c.BodyParser(&input); err != nil {
-		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
-	}
-	if err := utils.ValidateStruct(&input); err != nil {
-		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Validation failed: "+err.Error())
+	if err := utils.ParseAndValidateInput(c, &input); err != nil {
+		return err
 	}
 	resp, err := h.authService.Login(input)
 	if err != nil {

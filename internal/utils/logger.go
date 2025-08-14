@@ -7,8 +7,11 @@ import (
 	"go.uber.org/zap"
 )
 
-// SetupLogging configures the Zap logging system based on configuration
-func SetupLogging(cfg config.LoggingConfig) (*zap.Logger, error) {
+// Global logger instance
+var Logger *zap.Logger
+
+// InitLogger initializes the global Logger variable
+func InitLogger(cfg config.LoggingConfig) error {
 	var zapConfig zap.Config
 
 	// Check environment to determine log format
@@ -35,21 +38,8 @@ func SetupLogging(cfg config.LoggingConfig) (*zap.Logger, error) {
 		zap.AddStacktrace(zap.ErrorLevel),
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	// Set global logger
-	zap.ReplaceGlobals(logger)
-
-	return logger, nil
-}
-
-// GetLogger returns the global logger instance
-func GetLogger() *zap.Logger {
-	return zap.L()
-}
-
-// GetSugaredLogger returns the global sugared logger instance
-func GetSugaredLogger() *zap.SugaredLogger {
-	return zap.S()
+	Logger = logger
+	return nil
 }

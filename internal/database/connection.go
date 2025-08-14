@@ -4,19 +4,15 @@ import (
 	"time"
 
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-// DB holds the database connection
-var DB *gorm.DB
-
-// Connect establishes a connection to the database
-func Connect(cfg config.DatabaseConfig) error {
-	var err error
-
+// Connect establishes a connection to the database and returns the *gorm.DB instance
+func Connect(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	// Configure GORM logger
 	gormLogger := logger.New(
 		&GormLogWriter{},
@@ -29,17 +25,17 @@ func Connect(cfg config.DatabaseConfig) error {
 	)
 
 	// Connect to database
-	DB, err = gorm.Open(postgres.Open(cfg.URL), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(cfg.URL), &gorm.Config{
 		Logger: gormLogger,
 	})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Get underlying sql.DB
-	sqlDB, err := DB.DB()
+	sqlDB, err := db.DB()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Configure connection pool with default values
@@ -47,25 +43,25 @@ func Connect(cfg config.DatabaseConfig) error {
 	sqlDB.SetMaxIdleConns(10)           // Default max idle connections
 	sqlDB.SetConnMaxLifetime(time.Hour) // Default connection lifetime
 
-	zap.L().Info("Database connection established")
-	return nil
-}
+	utils.Logger.Info("Database connection established")
 
-// GetDB returns the database instance
-func GetDB() *gorm.DB {
-	return DB
+	// run migrations
+	if err := db.AutoMigrate(); err != nil {
+		utils.Logger.Fatal("Failed to run database migrations", zap.Error(err))
+	}
+
+	return db, nil
 }
 
 // Close closes the database connection
-func Close() error {
-	sqlDB, err := DB.DB()
+func Close(db *gorm.DB) error {
+	sqlDB, err := db.DB()
 	if err != nil {
 		return err
 	}
 	return sqlDB.Close()
 }
 
-// GormLogWriter implements logger.Writer interface for Zap
 type GormLogWriter struct{}
 
 // Printf implements the logger.Writer interface

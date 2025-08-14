@@ -3,6 +3,8 @@ package config
 import (
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 // Config holds all configuration for the application
@@ -60,6 +62,8 @@ type AppConfig struct {
 
 // Load loads configuration from environment variables
 func Load() *Config {
+	// Load .env file in development (ignore error if not present)
+	_ = godotenv.Load(".env", ".env.local")
 	return &Config{
 		Server: ServerConfig{
 			Host: getEnv("SERVER_HOST", "localhost"),

@@ -8,13 +8,13 @@ import (
 )
 
 // SetupFiberRoutes configures all application routes for Fiber
-func SetupRoutes(app *fiber.App, appServices *services.AppServices) {
+func SetupRoutes(app *fiber.App, services *services.Services) {
 	// Global middleware
 	app.Use(middleware.CORS())
 
 	// Initialize handlers
-	authHandler := handlers.NewAuthHandler(appServices.AuthService)
-	userHandler := handlers.NewUserHandler(appServices.UserService)
+	authHandler := handlers.NewAuthHandler(services.AUTH)
+	userHandler := handlers.NewUserHandler(services.USER)
 
 	api := app.Group("/api/v1")
 
@@ -26,6 +26,6 @@ func SetupRoutes(app *fiber.App, appServices *services.AppServices) {
 	api.Post("/auth/login", authHandler.Login)
 
 	// Protected routes with authentication
-	protected := api.Group("/", middleware.JWTAuth(appServices.JWTService, appServices.UserService))
+	protected := api.Group("/", middleware.JWTAuth(services.JWT, services.USER))
 	protected.Get("/user/me", userHandler.Me)
 }

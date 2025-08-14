@@ -5,22 +5,23 @@ import (
 	"time"
 
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/models"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 	"gorm.io/gorm"
 )
 
 // AuthService handles authentication business logic
 type AuthService struct {
-	db                *gorm.DB
-	encryptionService *EncryptionService
-	jwtService        *JWTService
+	db           *gorm.DB
+	jwtService   *JWTService
+	redisService *RedisService
 }
 
 // NewAuthService creates a new auth service
-func NewAuthService(db *gorm.DB, encryptionService *EncryptionService, jwtService *JWTService) *AuthService {
+func NewAuthService(db *gorm.DB, jwtService *JWTService, redisService *RedisService) *AuthService {
 	return &AuthService{
-		db:                db,
-		encryptionService: encryptionService,
-		jwtService:        jwtService,
+		db:           db,
+		jwtService:   jwtService,
+		redisService: redisService,
 	}
 }
 
@@ -33,7 +34,7 @@ func (a *AuthService) Register(input models.RegisterInput) (*models.AuthResponse
 	}
 
 	// Hash password
-	hashedPassword, err := a.encryptionService.Hash(input.Password)
+	hashedPassword, err := utils.Hash(input.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +87,7 @@ func (a *AuthService) Login(input models.LoginInput) (*models.AuthResponse, erro
 	}
 
 	// Verify password
-	valid, err := a.encryptionService.Verify(input.Password, user.Password)
+	valid, err := utils.Verify(input.Password, user.Password)
 	if err != nil {
 		return nil, err
 	}
