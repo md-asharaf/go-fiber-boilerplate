@@ -1,0 +1,90 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.html
+coverage.xml
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# Build directory
+build/
+dist/
+bin/
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+
+# Air (hot reload) files
+tmp/
+
+# Docker files
+.dockerignore
+
+# Node modules (if using any frontend build tools)
+node_modules/
+
+# Generated files
+docs/swagger/
+mocks/
+*.gen.go
+
+# Test cache
+.cache/
+
+# Migration files (keep structure, ignore specific migrations during development)
+# migrations/*.sql
+
+# Backup files
+*.bak
+*.backup
+
+# profiling files
+*.pprof
+
+# Local development overrides
+docker-compose.override.yml
