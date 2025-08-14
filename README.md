@@ -54,7 +54,7 @@ A modern, production-ready Go backend boilerplate using Fiber, featuring clean a
 
 ---
 
-## 🛠️ Tech Stack
+## 🧰 Tech Stack
 
 -   **Go 1.21+**
 -   **Fiber**: Fast, expressive web framework
@@ -94,7 +94,7 @@ A modern, production-ready Go backend boilerplate using Fiber, featuring clean a
     ```bash
     make run
     # or
-    go run ./cmd/server/main.go
+    go run ./cmd/main.go
     ```
 
 ### Using Docker
@@ -169,7 +169,7 @@ make test-integration
 
 ---
 
-## �️ Development
+## 🛠️ Development
 
 ### Available Make Commands
 
@@ -249,7 +249,7 @@ Includes services for:
 
 ---
 
-## � Monitoring & Observability
+## 📊 Monitoring & Observability
 
 -   **Health Checks**: `/api/v1/health` endpoint
 -   **Structured Logging**: JSON format with correlation IDs
