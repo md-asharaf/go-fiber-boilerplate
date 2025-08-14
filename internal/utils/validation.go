@@ -7,15 +7,11 @@ import (
 
 var validate = validator.New()
 
-func ValidateStruct(s interface{}) error {
-	return validate.Struct(s)
-}
-
 func ParseAndValidateInput(c *fiber.Ctx, i interface{}) error {
 	if err := c.BodyParser(i); err != nil {
 		return WriteErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
 	}
-	if err := ValidateStruct(i); err != nil {
+	if err := validate.Struct(i); err != nil {
 		return WriteErrorResponse(c, fiber.StatusBadRequest, "Validation failed: "+err.Error())
 	}
 	return nil
