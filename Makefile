@@ -1,7 +1,7 @@
-# Go Backend Boilerplate Makefile
+# Go Fiber Boilerplate Makefile
 
 # Variables
-APP_NAME := go-backend-boilerplate
+APP_NAME := go-fiber-boilerplate
 BINARY_NAME := $(APP_NAME)
 DOCKER_IMAGE := $(APP_NAME):latest
 GO_VERSION := 1.21
