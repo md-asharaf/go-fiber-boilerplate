@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
-	"github.com/go-chi/chi"
+	"github.com/gofiber/fiber/v2"
 	"github.com/yourusername/go-backend-boilerplate/internal/api/routes"
 	"github.com/yourusername/go-backend-boilerplate/internal/config"
 	"github.com/yourusername/go-backend-boilerplate/internal/database"
@@ -39,18 +38,17 @@ func main() {
 	// Initialize services
 	appServices := services.InitServices(cfg, db)
 
-	// Setup router
-	router := chi.NewRouter()
+	// Setup Fiber app
+	app := fiber.New()
 
 	// Pass appServices to routes for global access
-	routes.SetupRoutes(router, appServices)
+	routes.SetupFiberRoutes(app, appServices)
 
 	// Start server
 	serverAddr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
 	zap.L().Info("Starting server", zap.String("address", serverAddr))
 
-	err := http.ListenAndServe(serverAddr, router)
-	if err != nil {
+	if err := app.Listen(serverAddr); err != nil {
 		zap.L().Fatal("Failed to start server", zap.Error(err))
 	}
 }

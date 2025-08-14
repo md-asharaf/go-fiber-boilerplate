@@ -5,18 +5,14 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
-
-	"github.com/go-playground/validator/v10"
 )
-
-var validate = validator.New()
 
 // BindAndValidate decodes and validates a request body into the given struct
 func BindAndValidate(r *http.Request, v interface{}) error {
 	if err := json.NewDecoder(r.Body).Decode(v); err != nil {
 		return err
 	}
-	return validate.Struct(v)
+	return ValidateStruct(v)
 }
 
 // IsValidEmail validates email format

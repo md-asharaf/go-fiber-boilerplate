@@ -1,15 +1,19 @@
-# Go Backend Boilerplate
+# Go Fiber Backend Boilerplate
 
-A production-ready Go backend boilerplate with best practices, clean architecture, and comprehensive tooling.
+A production-ready Go backend boilerplate using Fiber, with clean architecture, modular service initialization, and standardized API responses.
 
 ## 🚀 Features
 
+- **Fiber Web Framework**: Fast, expressive, and modern HTTP routing
 - **Clean Architecture**: Proper separation of concerns with layers
+- **Modular Service Initialization**: All services initialized via `InitServices`
+- **Standardized API Responses**: Unified error and success response helpers
 - **Configuration Management**: Environment-based configuration
-- **Structured Logging**: JSON logging with configurable levels
-- **HTTP Middleware**: CORS, Authentication, Recovery, Logging
+- **Structured Logging**: JSON logging with Zap
+- **Redis Integration**: Context-based, idiomatic Redis service
+- **JWT Authentication**: Secure, stateless authentication middleware
 - **Health Checks**: Built-in health endpoint
-- **Error Handling**: Standardized error responses
+- **Error Handling**: Standardized error/success responses
 - **Docker Support**: Multi-stage Docker builds
 - **Database Ready**: PostgreSQL integration setup
 - **Testing**: Unit and integration test examples
@@ -50,8 +54,10 @@ A production-ready Go backend boilerplate with best practices, clean architectur
 ## 🛠️ Tech Stack
 
 - **Go 1.21+**
-- **Chi Router**: Fast and lightweight HTTP router
+- **Fiber**: Fast, expressive web framework
 - **Zap**: Structured logging
+- **Redis**: Caching and atomic operations
+- **go-playground/validator**: Input validation
 - **PostgreSQL**: Primary database (optional)
 - **Docker**: Containerization
 - **Make**: Build automation
@@ -176,9 +182,9 @@ make generate-mocks
 make generate-docs
 ```
 
-## 📦 Service Initialization
+## 📦 Service Initialization & Dependency Injection
 
-All core services (DB, JWT, Auth, User, Encryption) are initialized in one place using the `InitServices` function in `internal/services/app.go`. This function returns an `AppServices` container, which is passed throughout the application for dependency injection.
+All core services (DB, JWT, Auth, User, Encryption, Redis) are initialized in one place using the `InitServices` function in `internal/services/app.go`. This function returns an `AppServices` container, which is passed throughout the application for dependency injection.
 
 **Example:**
 ```go
@@ -188,17 +194,18 @@ import "github.com/yourusername/go-backend-boilerplate/internal/services"
 appServices := services.InitServices(cfg, db)
 ```
 
-## 🧩 Modularity
+## 🧩 Modularity & Fiber-First Design
 
 - All service types and initialization logic are centralized in `internal/services/app.go`.
-- Handlers and middleware receive only the dependencies they need, improving testability and maintainability.
+- Handlers and middleware use Fiber context and receive only the dependencies they need, improving testability and maintainability.
 - No global variables; all dependencies are injected via the `AppServices` container.
+- All routing, middleware, and handlers use Fiber patterns only.
 
 ## 🗂️ How to Add a New Service
 
 1. Add the new service to the `AppServices` struct in `internal/services/app.go`.
 2. Update the `InitServices` function to initialize and include the new service.
-3. Inject the new service into handlers or middleware as needed.
+3. Inject the new service into Fiber handlers or middleware as needed.
 
 ## 🐳 Docker
 
@@ -225,10 +232,10 @@ Includes services for:
 
 ## 🔒 Security
 
-- **CORS**: Configurable CORS middleware
+- **CORS**: Configurable Fiber CORS middleware
 - **Rate Limiting**: Built-in rate limiting
-- **Authentication**: JWT middleware ready
-- **Input Validation**: Request validation utilities
+- **Authentication**: JWT middleware (Fiber compatible)
+- **Input Validation**: Centralized request validation utilities
 - **Security Headers**: Standard security headers
 
 ## 📚 Documentation
@@ -236,6 +243,7 @@ Includes services for:
 - **API Docs**: OpenAPI/Swagger specification
 - **Code Comments**: Comprehensive code documentation
 - **Architecture**: Clean architecture documentation
+- **Fiber Usage**: All examples and docs use Fiber patterns
 
 ## 🚀 Deployment
 
@@ -274,6 +282,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- [Chi Router](https://github.com/go-chi/chi) for the excellent HTTP router
+- [Fiber](https://github.com/gofiber/fiber) for the web framework
 - [Zap](https://github.com/uber-go/zap) for structured logging
+- [go-redis](https://github.com/redis/go-redis) for Redis client
 - Go community for best practices and patterns

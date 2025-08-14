@@ -1,8 +1,7 @@
 package handlers
 
 import (
-	"net/http"
-
+	"github.com/gofiber/fiber/v2"
 	"github.com/yourusername/go-backend-boilerplate/internal/models"
 	"github.com/yourusername/go-backend-boilerplate/internal/services"
 	"github.com/yourusername/go-backend-boilerplate/internal/utils"
@@ -20,36 +19,34 @@ func NewAuthHandler(authService *services.AuthService) *AuthHandler {
 	}
 }
 
-// Register handles user registration
-func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
+// Register handles user registration for Fiber
+func (h *AuthHandler) Register(c *fiber.Ctx) error {
 	var input models.RegisterInput
-	if err := utils.BindAndValidate(r, &input); err != nil {
-		utils.WriteErrorResponse(w, http.StatusBadRequest, "Validation failed: "+err.Error())
-		return
+	if err := c.BodyParser(&input); err != nil {
+		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
 	}
-
+	if err := utils.ValidateStruct(&input); err != nil {
+		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Validation failed: "+err.Error())
+	}
 	resp, err := h.authService.Register(input)
 	if err != nil {
-		utils.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
-		return
+		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, err.Error())
 	}
-
-	utils.WriteJSONResponse(w, http.StatusCreated, resp)
+	return utils.WriteSuccessResponse(c, resp, "User registered successfully")
 }
 
-// Login handles user login
-func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
+// Login handles user login for Fiber
+func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	var input models.LoginInput
-	if err := utils.BindAndValidate(r, &input); err != nil {
-		utils.WriteErrorResponse(w, http.StatusBadRequest, "Validation failed: "+err.Error())
-		return
+	if err := c.BodyParser(&input); err != nil {
+		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
 	}
-
+	if err := utils.ValidateStruct(&input); err != nil {
+		return utils.WriteErrorResponse(c, fiber.StatusBadRequest, "Validation failed: "+err.Error())
+	}
 	resp, err := h.authService.Login(input)
 	if err != nil {
-		utils.WriteErrorResponse(w, http.StatusUnauthorized, err.Error())
-		return
+		return utils.WriteErrorResponse(c, fiber.StatusUnauthorized, err.Error())
 	}
-
-	utils.WriteJSONResponse(w, http.StatusOK, resp)
+	return utils.WriteSuccessResponse(c, resp, "User logged in successfully")
 }
