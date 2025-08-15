@@ -1,4 +1,4 @@
-package services
+package redis
 
 import (
 	"context"
@@ -20,7 +20,7 @@ func NewRedisService(cfg config.RedisConfig) (*RedisService, error) {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
 		Password: cfg.Password,
-		DB:       0, // Default to DB 0
+		DB:       0,
 	})
 
 	// Test the connection
@@ -30,7 +30,7 @@ func NewRedisService(cfg config.RedisConfig) (*RedisService, error) {
 
 	return &RedisService{
 		client: rdb,
-		ttl:    24 * time.Hour, // Default 24 hour TTL
+		ttl:    24 * time.Hour,
 	}, nil
 }
 

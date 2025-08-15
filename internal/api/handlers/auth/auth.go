@@ -1,19 +1,19 @@
-package handlers
+package auth
 
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/models"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/auth"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 )
 
 // AuthHandler handles authentication requests
 type AuthHandler struct {
-	authService *services.AuthService
+	authService *auth.AuthService
 }
 
 // NewAuthHandler creates a new auth handler
-func NewAuthHandler(authService *services.AuthService) *AuthHandler {
+func NewAuthHandler(authService *auth.AuthService) *AuthHandler {
 	return &AuthHandler{
 		authService: authService,
 	}

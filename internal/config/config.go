@@ -13,8 +13,8 @@ type Config struct {
 	Database DatabaseConfig
 	Redis    RedisConfig
 	JWT      JWTConfig
-	Email    EmailConfig
-	Logging  LoggingConfig
+	SMTP     SMTPConfig
+	Logger   LoggerConfig
 	App      AppConfig
 }
 
@@ -42,16 +42,17 @@ type JWTConfig struct {
 }
 
 // EmailConfig holds email configuration
-type EmailConfig struct {
-	SMTPHost     string
-	SMTPPort     int
-	SMTPUsername string
-	SMTPPassword string
-	FromEmail    string
+type SMTPConfig struct {
+	Host     string
+	Port     int
+	Username string
+	Password string
+	Email    string
+	From     string
 }
 
 // LoggingConfig holds logging configuration
-type LoggingConfig struct {
+type LoggerConfig struct {
 	Level string
 }
 
@@ -80,14 +81,14 @@ func Load() *Config {
 		JWT: JWTConfig{
 			Secret: getEnv("JWT_SECRET", "your-super-secret-jwt-key-change-this-in-production"),
 		},
-		Email: EmailConfig{
-			SMTPHost:     getEnv("SMTP_HOST", "smtp.gmail.com"),
-			SMTPPort:     getEnvAsInt("SMTP_PORT", 587),
-			SMTPUsername: getEnv("SMTP_USERNAME", ""),
-			SMTPPassword: getEnv("SMTP_PASSWORD", ""),
-			FromEmail:    getEnv("SMTP_FROM_EMAIL", "noreply@example.com"),
+		SMTP: SMTPConfig{
+			Host:     getEnv("SMTP_HOST", "smtp.gmail.com"),
+			Port:     getEnvAsInt("SMTP_PORT", 587),
+			Username: getEnv("SMTP_USERNAME", ""),
+			Password: getEnv("SMTP_PASSWORD", ""),
+			From:     getEnv("SMTP_FROM_EMAIL", "noreply@example.com"),
 		},
-		Logging: LoggingConfig{
+		Logger: LoggerConfig{
 			Level: getEnv("LOG_LEVEL", "info"),
 		},
 		App: AppConfig{
@@ -98,17 +99,26 @@ func Load() *Config {
 
 // Helper functions
 func getEnv(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
+	value := os.Getenv(key)
+	if value != "" {
 		return value
+	}
+	if defaultValue == "" {
+		panic("Missing required environment variable: " + key)
 	}
 	return defaultValue
 }
 
 func getEnvAsInt(key string, defaultValue int) int {
-	if value := os.Getenv(key); value != "" {
+	value := os.Getenv(key)
+	if value != "" {
 		if intValue, err := strconv.Atoi(value); err == nil {
 			return intValue
 		}
+		panic("Invalid integer value for environment variable: " + key)
+	}
+	if defaultValue == 0 {
+		panic("Missing required integer environment variable: " + key)
 	}
 	return defaultValue
 }

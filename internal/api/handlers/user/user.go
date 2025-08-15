@@ -1,19 +1,19 @@
-package handlers
+package user
 
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/models"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/user"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 )
 
 // UserHandler handles user-related requests
 type UserHandler struct {
-	userService *services.UserService
+	userService *user.UserService
 }
 
 // NewUserHandler creates a new user handler
-func NewUserHandler(userService *services.UserService) *UserHandler {
+func NewUserHandler(userService *user.UserService) *UserHandler {
 	return &UserHandler{
 		userService: userService,
 	}

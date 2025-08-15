@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -42,13 +41,6 @@ func Connect(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	sqlDB.SetMaxOpenConns(25)           // Default max open connections
 	sqlDB.SetMaxIdleConns(10)           // Default max idle connections
 	sqlDB.SetConnMaxLifetime(time.Hour) // Default connection lifetime
-
-	utils.Logger.Info("Database connection established")
-
-	// run migrations
-	if err := db.AutoMigrate(); err != nil {
-		utils.Logger.Fatal("Failed to run database migrations", zap.Error(err))
-	}
 
 	return db, nil
 }

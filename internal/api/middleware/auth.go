@@ -2,7 +2,8 @@ package middleware
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/jwt"
+	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/user"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 )
 
@@ -20,7 +21,7 @@ func CORS() fiber.Handler {
 }
 
 // JWTAuth middleware for Fiber
-func JWTAuth(jwtService *services.JWTService, userService *services.UserService) fiber.Handler {
+func JWTAuth(jwtService *jwt.JWTService, userService *user.UserService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		authHeader := c.Get("Authorization")
 		if authHeader == "" || len(authHeader) < 7 || authHeader[:7] != "Bearer " {

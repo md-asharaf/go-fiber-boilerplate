@@ -3,15 +3,11 @@ package utils
 import (
 	"os"
 
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
 	"go.uber.org/zap"
 )
 
-// Global logger instance
-var Logger *zap.Logger
-
 // InitLogger initializes the global Logger variable
-func InitLogger(cfg config.LoggingConfig) error {
+func InitLogger() *zap.Logger {
 	var zapConfig zap.Config
 
 	// Check environment to determine log format
@@ -25,7 +21,7 @@ func InitLogger(cfg config.LoggingConfig) error {
 	}
 
 	// Set log level
-	level, err := zap.ParseAtomicLevel(cfg.Level)
+	level, err := zap.ParseAtomicLevel(os.Getenv("LOG_LEVEL"))
 	if err != nil {
 		level = zap.NewAtomicLevelAt(zap.InfoLevel)
 	}
@@ -38,8 +34,7 @@ func InitLogger(cfg config.LoggingConfig) error {
 		zap.AddStacktrace(zap.ErrorLevel),
 	)
 	if err != nil {
-		return err
+		return zap.L()
 	}
-	Logger = logger
-	return nil
+	return logger
 }
