@@ -1,14 +1,10 @@
-package auth
+package services
 
 import (
 	"errors"
 	"time"
 
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/models"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/email"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/jwt"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/otp"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/redis"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 
 	"gorm.io/gorm"
@@ -17,14 +13,14 @@ import (
 // AuthService handles authentication business logic
 type AuthService struct {
 	db           *gorm.DB
-	jwtService   *jwt.JWTService
-	redisService *redis.RedisService
-	emailService *email.EmailService
-	otpService   *otp.OtpService
+	jwtService   *JWTService
+	redisService *RedisService
+	emailService *EmailService
+	otpService   *OtpService
 }
 
 // NewAuthService creates a new auth service
-func NewAuthService(db *gorm.DB, jwtService *jwt.JWTService, redisService *redis.RedisService, emailService *email.EmailService, otpService *otp.OtpService) *AuthService {
+func NewAuthService(db *gorm.DB, jwtService *JWTService, redisService *RedisService, emailService *EmailService, otpService *OtpService) *AuthService {
 	return &AuthService{
 		db:           db,
 		jwtService:   jwtService,

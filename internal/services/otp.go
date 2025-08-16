@@ -1,18 +1,16 @@
-package otp
+package services
 
 import (
 	"math/rand"
 	"strconv"
 	"time"
-
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/email"
 )
 
 type OtpService struct {
-	emailService *email.EmailService
+	emailService *EmailService
 }
 
-func NewOtpService(emailService *email.EmailService) *OtpService {
+func NewOtpService(emailService *EmailService) *OtpService {
 	return &OtpService{
 		emailService: emailService,
 	}

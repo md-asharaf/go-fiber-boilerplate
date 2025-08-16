@@ -3,22 +3,17 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/md-asharaf/go-fiber-boilerplate/cmd/server"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/api/routes"
+	r "github.com/md-asharaf/go-fiber-boilerplate/internal/api/routes"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/database"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/auth"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/email"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/jwt"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/otp"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/redis"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/services/user"
-	"github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
+	s "github.com/md-asharaf/go-fiber-boilerplate/internal/services"
+	u "github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 	"go.uber.org/zap"
 )
 
 func main() {
 	//init logger
-	logger := utils.InitLogger()
+	logger := u.InitLogger()
 	//Load conf
 	config := config.Load()
 	// init db
@@ -31,21 +26,21 @@ func main() {
 		logger.Fatal("Failed to run database migrations", zap.Error(err))
 	}
 	// init redis
-	redisService, err := redis.NewRedisService(config.Redis)
+	redisService, err := s.NewRedisService(config.Redis)
 	if err != nil {
 		logger.Fatal("Failed to initialize Redis service", zap.Error(err))
 	}
 	// init email,jwt,otp services
-	emailService := email.NewEmailService(config.SMTP)
-	jwtService := jwt.NewJWTService(config.JWT.Secret)
-	otpService := otp.NewOtpService(emailService)
+	emailService := s.NewEmailService(config.SMTP)
+	jwtService := s.NewJWTService(config.JWT.Secret)
+	otpService := s.NewOtpService(emailService)
 
-	userService := user.NewUserService(db)
-	authService := auth.NewAuthService(db, jwtService, redisService, emailService, otpService)
+	userService := s.NewUserService(db)
+	authService := s.NewAuthService(db, jwtService, redisService, emailService, otpService)
 	// create fiber app
 	app := fiber.New()
 	// set up routes
-	routes.SetupRoutes(app, &routes.Services{
+	r.SetupRoutes(app, &r.Services{
 		AuthService:  authService,
 		UserService:  userService,
 		JWTService:   jwtService,

@@ -1,4 +1,4 @@
-package email
+package services
 
 import (
 	"github.com/go-mail/mail"
