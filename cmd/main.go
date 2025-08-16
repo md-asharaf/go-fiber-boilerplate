@@ -6,6 +6,7 @@ import (
 	r "github.com/md-asharaf/go-fiber-boilerplate/internal/api/routes"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/config"
 	"github.com/md-asharaf/go-fiber-boilerplate/internal/database"
+	m "github.com/md-asharaf/go-fiber-boilerplate/internal/models"
 	s "github.com/md-asharaf/go-fiber-boilerplate/internal/services"
 	u "github.com/md-asharaf/go-fiber-boilerplate/internal/utils"
 	"go.uber.org/zap"
@@ -15,14 +16,17 @@ func main() {
 	//init logger
 	logger := u.InitLogger()
 	//Load conf
-	config := config.Load()
+	config, err := config.Load()
+	if err != nil {
+		logger.Fatal("Failed to load configuration", zap.Error(err))
+	}
 	// init db
 	db, err := database.Connect(config.Database)
 	if err != nil {
 		logger.Fatal("Failed to connect to database", zap.Error(err))
 	}
 	// run migrations
-	if err := db.AutoMigrate(); err != nil {
+	if err := db.AutoMigrate(&m.User{}); err != nil {
 		logger.Fatal("Failed to run database migrations", zap.Error(err))
 	}
 	// init redis

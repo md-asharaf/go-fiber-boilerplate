@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// InitLogger initializes the global Logger variable
+// InitLogger initializes the logger based on the environment
 func InitLogger() *zap.Logger {
 	var zapConfig zap.Config
 
